@@ -6,6 +6,7 @@ Vector = require 'src/hump.vector'
 require 'src/odonata/figure' -- odonata helps plotting graphs
 require 'src/sph/particle'
 require 'src/sph/sph'
+require 'src/sph/boundary'
 love.window.setMode(750, 750) -- window size
 love.window.setTitle('SPH simulation') -- window title
 
@@ -43,10 +44,11 @@ function love.load()
 
 	-- set up sph
 	sph.particle_list = particle_list -- add the particle to be simulated by SPH
-	sph.boundaries = {{Vector(0,Ly)  , Vector(Lx,Ly) ,'wall'}, -- north
-					  {Vector(Lx,Ly) , Vector(Lx,0)  ,'wall'}, -- east
-					  {Vector(Lx,0)  , Vector(0,0)   ,'wall'}, -- south
-					  {Vector(0,0)   , Vector(0,Ly) ,'wall'}} -- west
+	wall0 = Boundary(0,Vector(0,Ly)  , Vector(Lx,Ly),'wall')
+	wall1 = Boundary(1,Vector(Lx,Ly) , Vector(Lx,0) ,'wall')
+	wall2 = Boundary(2,Vector(Lx,0)  , Vector(0,0)  ,'wall')
+	wall3 = Boundary(3,Vector(0,0)   , Vector(0,Ly) ,'wall')
+	sph.boundaries = {wall0,wall1,wall2,wall3}
 
 	-- initialiaze the Figure instance
 	fig = Figure(Vector(50,50), Vector(650,650), Vector(0,Lx), Vector(0,Ly))
