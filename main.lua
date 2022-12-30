@@ -41,14 +41,17 @@ function love.load()
 			c=c+1
 		end
 	end
-
-	-- set up sph
 	sph.particle_list = particle_list -- add the particle to be simulated by SPH
+	
+	-- set up the boundary conditions
 	wall0 = Boundary(0,Vector(0,Ly)  , Vector(Lx,Ly),'wall')
 	wall1 = Boundary(1,Vector(Lx,Ly) , Vector(Lx,0) ,'wall')
 	wall2 = Boundary(2,Vector(Lx,0)  , Vector(0,0)  ,'wall')
 	wall3 = Boundary(3,Vector(0,0)   , Vector(0,Ly) ,'wall')
 	sph.boundaries = {wall0,wall1,wall2,wall3}
+
+	-- sph initialization
+	sph:set_boundaries()
 
 	-- initialiaze the Figure instance
 	fig = Figure(Vector(50,50), Vector(650,650), Vector(0,Lx), Vector(0,Ly))
@@ -56,8 +59,7 @@ end
 
 
 function love.update(dt)
-	-- love.timer.sleep(0.5)
-	sph:solver() -- compute particle locations	
+	sph:solver() -- compute particle locations, apply boundary conditions
 end
 
 

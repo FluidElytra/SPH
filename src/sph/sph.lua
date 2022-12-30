@@ -45,22 +45,18 @@ function SPH:solver()
 		local velocity = particle.v + acceleration*self.dt -- [m/s]
 		local position = particle.x[2] + velocity*self.dt -- [m]
 
-		-- apply boundary conditions
-		local new_position,new_velocity = self:boundary_conditions(particle,position,velocity)
 		-- update particle dynamic properties
 		particle:update(new_position,new_velocity,acceleration)
 	end
 end
 
-function SPH:boundary_conditions(particle,position,velocity)
-	local new_velocity = velocity
-	local new_position = position
+function SPH:set_boundaries()
+	-- compute the density, velocity, pressure for particles
+	local rho = self.rho_0
+	local pressure = 0
 
-	for i,boundary in pairs(self.boundaries) do
-		if boundary:isApplicable(particle,position) then
-			new_position, new_velocity = boundary:apply(particle,position,velocity)
-			break -- only apply one boundary condition per particle
-		end
+	-- set the boundary using dynamic method
+	for i,boundary in ipairs(self.set_boundaries) do
+		boundary:set(pressure,self.rho_0)
 	end
-	return new_position, new_velocity
 end
