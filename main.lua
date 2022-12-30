@@ -28,7 +28,8 @@ function love.load()
 	local dx = Lx/(Nx+1) -- [m] x-axis step
 	local dy = Ly/(Ny+1) -- [m] y-axis step
 	local mass = sph.rho_0 * 4/3 * math.pi * (Lx*Ly*chi_s/math.pi/N_part)^(3/2) -- [kg] one particle mass
-
+	sph.particle_mass = mass
+	
 	-- initialiaze the particle list
 	particle_list = {}	
 	local c = 1

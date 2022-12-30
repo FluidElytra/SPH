@@ -12,6 +12,7 @@ function SPH:new()
 	self.dt = 0.05 -- [s] time step
 	self.boudaries = {} -- list of boundary conditions
 	self.gravity = true -- if gravity must be taken into account
+	self.particle_mass = 0 -- [kg] mass of each fluid particle
 end
 
 function SPH:solver()
@@ -56,7 +57,7 @@ function SPH:set_boundaries()
 	local pressure = 0
 
 	-- set the boundary using dynamic method
-	for i,boundary in ipairs(self.set_boundaries) do
+	for i,boundary in ipairs(self.boundaries) do
 		boundary:set(pressure,self.rho_0)
 	end
 end
